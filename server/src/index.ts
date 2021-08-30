@@ -13,11 +13,6 @@ import connectRedis from 'connect-redis';
 import { MyContext } from './types';
 import session from 'express-session';
 
-declare module 'express-session' {
-  export interface SessionData {
-    user: { [key: string]: any };
-  }
-}
 
 const main = async () => {
   const orm = await MikroORM.init(mikroConfig);
@@ -49,7 +44,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({req ,res}):MyContext => ({ em: orm.em , req, res }),
+    context: ({req ,res}):MyContext => ({ em: orm.em , req, res })
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
