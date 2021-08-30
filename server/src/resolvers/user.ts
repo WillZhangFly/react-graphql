@@ -52,11 +52,11 @@ export class UserResolver {
       }
     }
 
-    if(options.password.length <=3){
+    if(options.password.length <=2){
       return {
         errors:[{
            field:"password",
-           message:"length must be greater than 3"
+           message:"length must be greater than 2"
         }]
       }
     }
@@ -86,7 +86,7 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async login(
     @Arg('options', () => UsernamePasswordInput) options: UsernamePasswordInput,
-    @Ctx() { em }: MyContext
+    @Ctx() { em , req }: MyContext
   ): Promise<UserResponse> {
     const user = await em.findOne(User, { username: options.username });
     if (!user) {
@@ -111,6 +111,9 @@ export class UserResolver {
         ],
       };
     }
+    
+    req.session.user!.userId = user.id;
+
     return {
       user,
     };
