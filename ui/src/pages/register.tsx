@@ -1,5 +1,6 @@
 import { Box, Button } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
+import { useRouter } from 'next/router';
 import React from 'react';
 import InputField from '../components/InputField';
 import Wrapper from '../components/Wrapper';
@@ -10,6 +11,7 @@ interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
   const [, register] = useRegisterMutation();
+  const router = useRouter();
   return (
     <Wrapper variant="small">
       <Formik
@@ -18,6 +20,8 @@ export const Register: React.FC<registerProps> = ({}) => {
           const response = await register(values);
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
+          } else if (response.data?.register.user) {
+            router.push('/');
           }
         }}
       >
