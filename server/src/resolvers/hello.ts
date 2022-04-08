@@ -4,6 +4,6 @@ import { Query, Resolver } from "type-graphql";
 export class HelloResolver {
     @Query(() => String)
     hello(){
-        return "Bye Bye";
+        return "Year 2022";
     }
 }

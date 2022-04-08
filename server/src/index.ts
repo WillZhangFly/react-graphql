@@ -12,6 +12,8 @@ import redis from 'redis';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import cors from 'cors';
+const { ApolloServerPluginLandingPageGraphQLPlayground } = require('apollo-server-core');
+
 
 const main = async () => {
   const orm = await MikroORM.init(mikroConfig);
@@ -45,6 +47,11 @@ const main = async () => {
   );
 
   const apolloServer = new ApolloServer({
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground({
+        // options
+      })
+    ],
     schema: await buildSchema({
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
